@@ -12,7 +12,8 @@ namespace TextToNumber
             { "один", new List<string>(){"одна"}},
             { "тысяча", new List<string>(){"тысяч([а-я])*"}},
             { "миллион", new List<string>(){@"(миллион)([а-я])*"}},
-            { "миллиард", new List<string>(){@"(миллиард)([а-я])*"}}
+            { "миллиард", new List<string>(){@"(миллиард)([а-я])*"}},
+            { "минус", new List<string>(){"-"}}
         };
         private Dictionary<string, int> Units { get; } = new()
         {
@@ -52,6 +53,19 @@ namespace TextToNumber
             {"девяносто", 90},
         };
         
+        private Dictionary<string, int> Hundreds { get; } = new()
+        {
+            {"сто", 100},
+            {"двести", 100},
+            {"триста", 100},
+            {"четыреста", 100},
+            {"пятьсот", 100},
+            {"шестьсот", 100},
+            {"семьсот", 100},
+            {"восемьсот", 100},
+            {"девятьсот", 100},
+        };
+        
         
         public long Parse(string text)
         {
@@ -64,7 +78,7 @@ namespace TextToNumber
                 }
             }
             var numbers = 
-            Regex.Match(text, @"(-)?(один|два|три|четыре|пять|шесть|семь|восемь|девять|десять)")
+       
             return 0;
         }
     }
