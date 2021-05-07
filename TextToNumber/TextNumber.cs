@@ -62,7 +62,7 @@ namespace TextToNumber
 
             foreach (var declination in Declinations.Reverse())
             {
-                text = Regex.Replace(text, declination.Value, declination.Key.ToString());
+                text = Regex.Replace(text, @"(?<=([\s,.:;]|^))" + declination.Value + @"(?=([\s,.:;]|$))", declination.Key.ToString());
             }
             
             var words = text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
