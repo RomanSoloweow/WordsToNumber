@@ -6,4 +6,3 @@ jobs:
     - dotnet: 5.0
       mono: none
       env: DOTNETCORE=5  # optional, can be used to take different code paths in your script
-...
