@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
 namespace TextToNumber
 {
-    public class TextNumber
+    public class WordsToNumber
     {
-        private Dictionary<int, string> Declinations { get; } = new()
+        /// <summary>
+        /// Delegate to format numbers before adding to text
+        /// </summary>
+        public Func<BigInteger , string> NumberToString;
+        public Dictionary<BigInteger , string> Declinations { get; } = new()
         {
             {1, @"одн(ого|ому|им|ом|ой|ою|их|ими|им|и|а|о|у)"},
             {2, @"дв(ух|умя|ум|а)"},
@@ -48,22 +53,16 @@ namespace TextToNumber
             {900, @"девят(ьсот|исот|истам|ьюстами|истах)"},
             {1000, @"тысяч(ами|ей|а|и|е|у)?"},
             {1000000, @"миллион(ами|а|у|ом|е|ов)?"},
-            // {1000000000, @"миллиард(ами|а|у|ом|е|ов)?"},
-            // {1000000000000, @"триллион(а|у|ом|ов)?"},
-            // {1000000000000000, @"миллиард(а|у|ом|ов)?"},
+            {1000000000, @"миллиард(ами|а|у|ом|е|ов)?"},
+            {1000000000000, @"триллион(ами|а|у|ом|ов)?"},
+            {1000000000000000, @"триллиард(ами|а|у|ом|ов)?"}
         };
 
         private Regex NumberRegex = new Regex(@"\d+(\.\d+)?", RegexOptions.Compiled);
-
-
-        public string TextWordsToNumber(string text)
+        
+        public string WordsToNumberInText(string text)
         {
-            text = text.ToLower();
-
-            foreach (var declination in Declinations.Reverse())
-            {
-                text = Regex.Replace(text, @"(?<=([\s,.:;]|^))" + declination.Value + @"(?=([\s,.:;]|$))", declination.Key.ToString());
-            }
+            text = NumbersToInfinitive(text);
             
             var words = text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
@@ -73,6 +72,7 @@ namespace TextToNumber
             {
                 if (!NumberRegex.IsMatch(word))
                 {
+                    //combine several numbers in a row into one
                     if (buffer.Count < 2)
                     {
                         result.AddRange(buffer);
@@ -80,7 +80,9 @@ namespace TextToNumber
                     }
                     else
                     {
-                        result.Add(WordsToNumber(buffer).ToString());
+                        var number = InfinitiveNumbersToNumber(buffer);
+                        var numberString = NumberToString == null ? number.ToString() : NumberToString(number);
+                        result.Add(numberString);
                         buffer.Clear();
                     }
                     
@@ -92,25 +94,27 @@ namespace TextToNumber
                 }
             }
 
-            if (buffer.Count <2)
-            {
-                result.AddRange(buffer);
-                buffer.Clear();
-            }
-            else
-            {
-                result.Add(WordsToNumber(buffer).ToString());
-                buffer.Clear();
-            }
-            
             return string.Join(" ", result);
         }
-        
-        private int WordsToNumber(List<string> words)
+
+        public string NumbersToInfinitive(string text)
         {
-            var numbers = words.Select(int.Parse).ToArray();
-            int result = 0;
-            List<int> numbers2 = new ();
+            foreach (var declination in Declinations.Reverse())
+            {
+                text = Regex.Replace(text, @"(?<=([\s,.:;]|^))" + declination.Value + @"(?=([\s,.:;]|$))", declination.Key.ToString(), RegexOptions.IgnoreCase);
+            }
+
+            return text;
+        }
+        
+        
+        public BigInteger InfinitiveNumbersToNumber(List<string> words)
+        {
+            var numbers = words.Select(ulong.Parse).ToArray();
+            BigInteger  result = 0;
+            List<BigInteger > numbers2 = new ();
+            
+            //adding numbers 200 + 30 + 5 = 235
             for (int i = 0; i < numbers.Length; i++)
             {
                 var temp = numbers[i];
@@ -130,6 +134,7 @@ namespace TextToNumber
                 }
             }
             
+            //235 1000 577 = 235000 + 577 = 235577
             for (int i = 0; i < numbers2.Count; i++)
             {
                 if (i < numbers2.Count-1 && numbers2[i] < numbers2[i + 1])
