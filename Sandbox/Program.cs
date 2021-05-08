@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Numerics;
 using TextToNumber;
 
@@ -11,10 +12,9 @@ namespace Sandbox
             var parser = new WordsToNumber();
             parser.NumberToString += NumberToString;
 
-            var result = parser.WordsToNumberInText(
-                "Пятьюстами пятью миллионами оплатил дом, который стоил на триста шестьдесят семь тысяч дешевле."
-                + " В итоге семьдесят два года и ещё двести пять лет мучений cта одиннадцать тысяч фиолетовых оленей.");
-            
+            var input = File.ReadAllText("input.txt");
+            var output = parser.WordsToNumberInText(input);
+            File.WriteAllText("output.txt", output);
         }
 
         static string NumberToString(BigInteger number)
