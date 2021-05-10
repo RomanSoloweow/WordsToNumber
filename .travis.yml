@@ -15,5 +15,5 @@ addons:
 
 script:
     - dotnet build
-    - sonar-scanner-X
+    - sonar-scanner
 
