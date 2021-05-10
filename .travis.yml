@@ -4,7 +4,7 @@ dotnet: 5.0
 
 addons:
   sonarcloud:
-    organization: ""gmike""
+    organization: "gmike"
 
 before_install:
 - bash ./tools/travis-ci-install-sonar.sh
