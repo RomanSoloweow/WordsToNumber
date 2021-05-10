@@ -11,6 +11,8 @@ dotnet: 5.0
 addons:
   sonarcloud:
     organization: "gmike"
+    token: $SONAR_TOKEN
+    
 script:
     - dotnet build
     - sonar-scanner
