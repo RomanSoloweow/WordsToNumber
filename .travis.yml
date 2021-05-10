@@ -7,5 +7,14 @@ env:
         - DOTNET_CLI_TELEMETRY_OPTOUT=1
 mono: none
 dotnet: 5.0
+
+addons:
+  sonarcloud:
+    organization: "gmike"
+    token:
+      secure: "J1rbD4yb6d54PN15EYJPa/m+sAJ9Zj40bsasoi1AptNCOu0JaZb2g9Z4Znbcn+5kMLOLBLWwB8saTnx3W7AK0lPybdqbe6xi2mV2NmvRx1yZvj9U7tx1DOaGO7Iwr/3KNTtk4hYHfWNxMH37/8Kwdd6KSccxyRKwPBEsNkN3JAzkbbDabya+Xtv5JR6Rh0+4FGcjv6dkxUeus+hNacjFh4hfIlBSFO7vbxgtSrEAeq/okjqDsz+4eKxMycCPevP6R9npF1MXi1HTzsQEMh4ZwWpStj70HDNaW6JWF3YD8r0bVJJUkEW6nGo5Arh/XeJOoXnNxjlyqkoq7JwkbRTIwYGXLeWgB+Dm/vcHEjrJP2U//TI5ZgHb8aiztvL8u7pvCA/jP0OXIubtUwQ7vU9TCtl+ojsHTuh4ElOFXt8jJws8J/li9WE6I/4soZD960PiQ3+K2Z7AmRSKWtYauvcfhEhcVHQVWTAwbEVqZr4pSB+e3G3geriTJPVaZuqTB62DuF1DDnh25VGV/grz1l2E0CjDIwpNsYxQyqyaXjgF82MO+7F9hLobLApjkt+nlG/RyBtGoy+3Yl8a5G+7TMykAa2ysQlXz+PV9r9NMr2KtFe9I1x2mWcY2G5VeZn7SG+LK6lF4BO/2i4OfhCnTiz7t+LmNwOSz5je+MEdrfzXozo="
+      
 script:
     - dotnet build
+    - sonar-scanner
+
