@@ -11,7 +11,7 @@ dotnet: 5.0
 addons:
   sonarcloud:
     organization: "gmike"
-    token: "swb/zZEaIrpJLWKxMa2pVJvs0JAuGJbDSgOiOh/errT3vrzO7LwtuK9n0bIMx1pc8CzSqjS3ZZnoYG32JTVKMQT7Rbgz4ORNlGZ9J60+VVy5G05hmGeoTuNG0hmMkFaETZTf0zbRi9WlglbyZ9EvRVL6HYam31C5/tNwWY/lSzcCunrzdkFJcbYNPVp1FiD7DUqnqKgUWly8GTTUA5LiceWD8ge4EuvQ+EgqzdwnQFYRGWgo1PqR1XPXuRIbH1znpUtHeakMLswRDIztcGTl3Dn+AnjI/QIkxWZsiAcLEdrcJmOMyC4VL1fMzH/+ZHJC6+ZaP7R3OtiQs1qQnVAq3Hwg3nScOSbbo5SUvDgwqei89JZCKxnYTkLowPu2r15vH7nq4tMPXjfemRhg5U1NOtzi+OP93OUAg3akyQq/hsKOfDKAoimMCkU2tkFaVamCMupGCTdbyKxIyUdIL0J4aKhe6KMdbQH4J6piA1Gq5+nC6xZxx+NoqSBpx6KwjF4n2oUVAVW33sQDi0CrloI5rJmBm80tUS040b1JCyAXrhcUaNVhFTwDk+3vM1uvlh3uTfr/sDBRVgnPk2nXe/MQG1jnDjMOADf6KJvZSRFuV5Zv5Cwjr/FE2BJH3wvZIXo9lRAdxg6IimyPpJpRsKSU4rfWrAiqOND3/xWtkh8Ko9E=" # encrypted value of your token
+    token: " 08829a9592388edc186b75add89d29f215263cd"
 
 script:
     - dotnet build
