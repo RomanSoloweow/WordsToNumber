@@ -11,7 +11,7 @@ dotnet: 5.0
 addons:
   sonarcloud:
     organization: "gmike"
-    token: " 08829a9592388edc186b75add89d29f215263cd"
+    token: "08829a9592388edc186b75add89d29f215263cd"
 
 script:
     - dotnet build
