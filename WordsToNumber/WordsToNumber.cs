@@ -118,7 +118,7 @@ namespace TextToNumber
             return result;
         }
 
-        private List<string> MergeInfitiveWordsInText(List<string> words)
+        private List<string> MergeInfinitiveWordsInText(List<string> words)
         {
             List<string> result = new();
             if (!words.Any())
