@@ -1,0 +1,18 @@
+language: csharp
+os: linux
+dist: bionic
+env:
+    global:
+        - DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
+        - DOTNET_CLI_TELEMETRY_OPTOUT=1
+mono: none
+dotnet: 5.0
+
+addons:
+  sonarcloud:
+    organization: "gmike"
+    token: $SONAR_TOKEN
+    
+script:
+    - dotnet build
+    - sonar-scanner
