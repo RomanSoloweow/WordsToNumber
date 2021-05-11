@@ -64,7 +64,7 @@ namespace TextToNumber
             text = NumbersToInfinitive(text);
 
             var words = text.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
-            words = MergeInfitiveWordsInText(words);
+            words = MergeInfinitiveWordsInText(words);
 
             return string.Join(" ", words);
         }
