@@ -2,6 +2,7 @@
 using System.IO;
 using System.Numerics;
 using TextToNumber;
+using WordsToNumbers;
 
 namespace Sandbox
 {
@@ -11,19 +12,9 @@ namespace Sandbox
         {
             var parser = new WordsToNumber();
             parser.NumberToString += NumberToString;
-
+            
             var input = File.ReadAllText("input.txt");
-            // var output = parser.WordsToNumberInText("Пять");
-            // output = parser.WordsToNumberInText(".Пятьсот.");
-            // output = parser.WordsToNumberInText("четыреста сорок .пять");
-            // output = parser.WordsToNumberInText("четыреста сорок пять.");
-            // output = parser.WordsToNumberInText(".пять");
-            // output = parser.WordsToNumberInText("пять.");
-            // output = parser.WordsToNumberInText(".Пятьсот двадцать пять тысяч триста сорок семь.");
-            // output = parser.WordsToNumberInText("два, четыре, сорок восемь");
-            // output = parser.WordsToNumberInText("Сколько солдат там было? пять? Пятьдесят? Пятьсот?");
-            // output = parser.WordsToNumberInText("Пятьдесят пять- много это или мало?");
-             var output = parser.WordsToNumberInText(input);
+            var output = parser.WordsToNumberInText(input);
             File.WriteAllText("output.txt", output);
         }
 

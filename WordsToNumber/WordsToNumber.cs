@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using TextToNumber.Helper;
 
-namespace TextToNumber
+namespace WordsToNumbers
 {
     public class WordsToNumber
     {
@@ -16,7 +16,7 @@ namespace TextToNumber
         public Func<BigInteger , string> NumberToString;
         public Dictionary<BigInteger , string> Declinations { get; } = new()
         {
-            {1, @"одн(ого|ому|им|ом|ой|ою|их|ими|им|и|а|о|у)"},
+            {1, @"од(ного|ному|ним|ном|ной|ною|них|ними|ин|ним|ни|на|но|ну)"},
             {2, @"дв(ух|умя|ум|а)"},
             {3, @"тр(ех|емя|ем|и)"},
             {4, @"четыр(ех|ем|ьмя|е)"},
@@ -62,15 +62,18 @@ namespace TextToNumber
         public string WordsToNumberInText(string text)
         {
             text = NumbersToInfinitive(text);
-
+            return MergeInfinitiveWordsInText(text);
+            
             var words = text.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+            
             words = MergeInfinitiveWordsInText(words);
-
+          
             return string.Join(" ", words);
         }
 
         public string NumbersToInfinitive(string text)
         {
+            
             foreach (var declination in Declinations.Reverse())
             {
                 // text = Regex.Replace(text, @"(?<=([\s,.:;]|^))" + declination.Value + @"(?=([\s,.:;]|$))", declination.Key.ToString(), RegexOptions.IgnoreCase);
@@ -104,7 +107,7 @@ namespace TextToNumber
             //235 1000 577 = 235000 + 577 = 235577
             for (int i = 0; i < numbers2.Count; i++)
             {
-                if (i < numbers2.Count-1 && numbers2[i] < numbers2[i + 1])
+                if (i < numbers2.Count - 1 && numbers2[i] < numbers2[i + 1])
                 {
                     result += numbers2[i] * numbers2[i + 1];
                     i++;
@@ -132,7 +135,7 @@ namespace TextToNumber
                 string prefix = string.Empty;
                 string postfix = string.Empty;
                 
-                var match = Regex.Matches(words[i], @"(\W|\s|^)?(\d+)(\W|$|\s)?").GetTheLongest();
+                var match = Regex.Matches(words[i], @"^(\W|\s)?(\d+)(\W|\s)?$").GetTheLongest();
                 var currentNumber = new NumberMatch(match);
                 
                 if (currentNumber.IsNumber)
@@ -140,24 +143,24 @@ namespace TextToNumber
                     prefix = currentNumber.Prefix;
                     buffer.Add(currentNumber.Value);
                     postfix = currentNumber.Postfix;
-                }
+               
 
-                while (i<words.Count-1 && string.IsNullOrEmpty(postfix))
-                {
-                    match = Regex.Matches(words[i +1], @"(\W|\s|^)?(\d+)(\W|$|\s)?").GetTheLongest();
-                    currentNumber = new NumberMatch(match);
-                    
-                    if(currentNumber.HasPrefix || !currentNumber.IsNumber)
-                        break;
-                    
-                    buffer.Add(currentNumber.Value);
-                    i++;
-                    
-                    if (currentNumber.HasPostfix)
+                    while (i<words.Count-1 && string.IsNullOrEmpty(postfix))
                     {
-                        postfix = currentNumber.Postfix;
+                        match = Regex.Matches(words[i +1], @"(\W|\s|^)?(\d+)(\W|$|\s)?").GetTheLongest();
+                        currentNumber = new NumberMatch(match);
+                        
+                        if(currentNumber.HasPrefix || !currentNumber.IsNumber)
+                            break;
+                        
+                        buffer.Add(currentNumber.Value);
+                        i++;
+                        
+                        if (currentNumber.HasPostfix)
+                        {
+                            postfix = currentNumber.Postfix;
+                        }
                     }
-                
                 }
   
                 if (buffer.Any())
@@ -173,6 +176,48 @@ namespace TextToNumber
 
             return result;
         }
-        
+
+        public string MergeInfinitiveWordsInText(string text)
+        { 
+            var result = text;
+            int offset = 0;
+            var matches =  Regex.Matches(text, @"(?<=([^а-яА-Я]|\s|^))(\d+)(?=([^а-яА-Я]|\s|$))");
+          List<Match> buffer = new();
+          
+          for(int i=0; i<matches.Count;i++)
+          {
+              buffer.Add(matches[i]);
+              while (i < matches.Count-1 && 
+                     string.IsNullOrWhiteSpace(GetMatchesInterval(text, matches[i], matches[i + 1]))
+              )
+              {
+                buffer.Add(matches[i +1]);
+                i++;
+              }
+
+              if (buffer.Count > 1)
+              {
+                  var number = InfinitiveNumbersToNumber(buffer.Select(x=>x.Value).ToList());
+                  var numberString = NumberToString == null ? number.ToString() : NumberToString(number);
+                  var startIndex = buffer.First().Index;
+                  var lenght = buffer.Last().Index - startIndex + buffer.Last().Length;
+                  
+                  result = result.Remove(startIndex - offset, lenght);
+                  result = result.Insert(buffer.First().Index - offset, numberString);
+                  offset += lenght - numberString.Length;
+              }
+              
+              buffer.Clear();
+          }
+          return result;
+        }
+
+        private string GetMatchesInterval(string text, Match left, Match right)
+        {
+            var intervalStart = left.Index + left.Length ;
+            var intervalLenght = right.Index - intervalStart;
+            var result = text.Substring(intervalStart, intervalLenght);
+            return result;
+        }
     }
 }
