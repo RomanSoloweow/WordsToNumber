@@ -12,7 +12,10 @@ addons:
   sonarcloud:
     organization: "gmike"
     token: $SONAR_TOKEN
-    
+       
 script:
     - dotnet build
     - sonar-scanner
+    
+- name: sonarscan-dotnet
+uses: highbyte/sonarscan-dotnet@v2.1.1-beta
