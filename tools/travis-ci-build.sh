@@ -1,9 +1,9 @@
 #!/bin/sh
 echo "Executing MSBuild DLL begin command..."
-dotnet ./tools/sonar/SonarScanner.MSBuild.dll begin /o:"gmike" /k:"RomanSoloweow_WordsToNumber" /d:sonar.cs.opencover.reportsPaths="**/TestResults/*.trx" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.verbose=true /d:sonar.login=${SONAR_TOKEN}
+dotnet ./tools/sonar/SonarScanner.MSBuild.dll begin /o:"gmike" /k:"RomanSoloweow_WordsToNumber" /d:sonar.cs.xunit.reportsPaths="**/TestResults/*.trx" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.verbose=true /d:sonar.login=${SONAR_TOKEN}
 echo "Running build..."
 dotnet build WordsToNumber.sln
 echo "Running tests..."
-dotnet test WordsToNumber.Tests/WordsToNumber.Tests.csproj- -logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --results-directory "**/TestResults/*.trx"
+dotnet test WordsToNumber.Tests/WordsToNumber.Tests.csproj --collect "Code Coverage" --logger trx --results-directory "TestsResults"
 echo "Executing MSBuild DLL end command..."
 dotnet ./tools/sonar/SonarScanner.MSBuild.dll end /d:sonar.login=${SONAR_TOKEN}
