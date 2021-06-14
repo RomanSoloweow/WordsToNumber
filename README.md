@@ -1,5 +1,7 @@
 # WordsToNumber
 
+[![Build Status](https://travis-ci.com/RomanSoloweow/WordsToNumber.svg?branch=master)](https://travis-ci.com/RomanSoloweow/WordsToNumber)
+
 Allows you to find in the text and replace numbers written in words, numbers written in digits for Russian locale:
 
 ```C#
