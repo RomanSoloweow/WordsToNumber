@@ -6,4 +6,4 @@ dotnet build WordsToNumber.sln
 echo "Running tests..."
 dotnet test WordsToNumber.sln
 echo "Executing MSBuild DLL end command..."
-dotnet ../tools/sonar/SonarScanner.MSBuild.dll end /d:sonar.login=${SONAR_TOKEN}
+dotnet tools/sonar/SonarScanner.MSBuild.dll end /d:sonar.login=${SONAR_TOKEN}
