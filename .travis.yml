@@ -14,10 +14,13 @@ addons:
     token: $SONAR_TOKEN
 
 before_install:
-- bash ./tools/travis-ci-install-sonar.sh
+  - bash ./tools/travis-ci-install-sonar.sh
+
+install:
+  - sudo apt-get install -qq dotnet-sdk-5.0
+  - dotnet restore
 
 script:
-    - dotnet build
-    - sonar-scanner
+    - dotnet build    
     - bash ./tools/travis-ci-build.sh
     
