@@ -4,6 +4,6 @@ dotnet ./tools/sonar/SonarScanner.MSBuild.dll begin /o:"gmike" /k:"RomanSoloweow
 echo "Running build..."
 dotnet build WordsToNumber.sln
 echo "Running tests..."
-dotnet test WordsToNumber.Tests/WordsToNumber.Tests.csproj- -logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+dotnet test WordsToNumber.Tests/WordsToNumber.Tests.csproj- -logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --results-directory "**/TestResults/*.trx"
 echo "Executing MSBuild DLL end command..."
 dotnet ./tools/sonar/SonarScanner.MSBuild.dll end /d:sonar.login=${SONAR_TOKEN}
