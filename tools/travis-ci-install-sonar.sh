@@ -4,4 +4,4 @@ wget -O sonar.zip https://github.com/SonarSource/sonar-scanner-msbuild/releases/
 echo "Unzipping..."
 unzip -qq sonar.zip -d tools/sonar
 echo "Changing permissions..."
-chmod +x tools/sonar/sonar-scanner-4.6.1.2450/bin/sonars-canner
+chmod +x tools/sonar/sonar-scanner-4.6.1.2450/bin/sonars-scanner
