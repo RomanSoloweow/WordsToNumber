@@ -16,6 +16,7 @@ before_install:
 
 install:
   - sudo apt-get install -qq dotnet-sdk-5.0
+    - dotnet restore
 
 script:
     - dotnet build    
